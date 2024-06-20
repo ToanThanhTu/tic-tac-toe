@@ -31,45 +31,29 @@ function Board({ xIsNext, squares, onPlay }) {
 
   if (winner) {
     status = "Winner: " + winner;
+  } else if (!squares.includes(null)) {
+    status = "It's a draw";
   } else {
     status = "Next Player: " + (xIsNext ? "X" : "O");
-  }
-
-  const board = (
-    <div></div>
-  );
-
-  for (let i = 0; i < 3; i++) {
-    const row = (
-      <div className='board-row'></div>
-    );
-    for (let j = 0; j < 3; j++) {
-      const square = (
-        <Square value={squares[j]} onSquareClick={() => handleClick(j)} />
-      );
-      row.appendChild();
-    }
-    
   }
 
   return (
     <>
       <div className='status'>{status}</div>
-      <div className='board-row'>
-        <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-        <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-        <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
-      </div>
-      <div className='board-row'>
-        <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
-        <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-        <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
-      </div>
-      <div className='board-row'>
-        <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-        <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-        <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
-      </div>
+      {Array(3).fill(null).map((_, rowIndex) => (
+        <div className='board-row' key={rowIndex}>
+          {Array(3).fill(null).map((_, colIndex) => {
+            const squareIndex = rowIndex * 3 + colIndex;
+            return (
+              <Square
+                key={colIndex}
+                value={squares[squareIndex]}
+                onSquareClick={() => handleClick(squareIndex)}
+              />
+            );
+          })}
+        </div>
+      ))}
     </>
   );
 }
